@@ -10,6 +10,8 @@
 	import { page } from '$app/state';
 	import { restoreScrollPosition, saveScrollPosition, scrollPositions } from '$lib/stores/scroll';
 
+	import { theme } from '$lib/stores/theme';
+
 	// Dynamic Import for Simulator
 	let { children } = $props();
 	let mounted = $state(false);
@@ -18,6 +20,13 @@
 
 	let isHomePage = $derived(page.url.pathname === '/');
 	let isAdminRoute = $derived(page.url.pathname.startsWith('/admin'));
+
+	// Derived theme color for Android address bar
+	let metaThemeColor = $derived.by(() => {
+		if ($theme === 'clean') return '#F9F9F9';
+		if ($theme === 'glitch') return '#E6E6FA';
+		return '#000000'; // Gold / Default
+	});
 
 	onMount(async () => {
 		initAuth();
@@ -102,6 +111,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<meta name="theme-color" content={metaThemeColor} />
 </svelte:head>
 
 {#if isAdminRoute}

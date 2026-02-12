@@ -14,6 +14,8 @@
 	import AdminHeader from '$lib/components/admin/AdminHeader.svelte';
 	import AdminToast from '$lib/components/admin/AdminToast.svelte';
 
+	import { theme } from '$lib/stores/theme';
+
 	let { children } = $props();
 
 	// Derive page title from path
@@ -27,6 +29,13 @@
 	});
 
 	let isLoginPage = $derived(page.url.pathname.includes('/admin/login'));
+
+	// Derived theme color for Android address bar (Admin)
+	let metaThemeColor = $derived.by(() => {
+		if ($theme === 'clean') return '#FFFFFF'; // or #F5F5F7
+		if ($theme === 'glitch') return '#E6E6FA';
+		return '#1C1C1E'; // Admin Surface Color (Gold Theme Header) or #000000
+	});
 
 	onMount(() => {
 		initAdminAuth();
@@ -62,7 +71,7 @@
 <svelte:head>
 	<title>Blancbeu Admin{pageTitle ? ` — ${pageTitle}` : ''}</title>
 	<meta name="description" content="Blancbeu Administration Panel" />
-	<meta name="theme-color" content="#000000" />
+	<meta name="theme-color" content={metaThemeColor} />
 	<link rel="manifest" href="/admin/manifest.json" />
 	<link
 		rel="stylesheet"

@@ -79,6 +79,62 @@
     --admin-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
+/* --- Glitch Theme (Gen Z / Lavender) --- */
+[data-theme="glitch"] {
+    --admin-bg: #E6E6FA;
+    /* Lavender */
+    --admin-surface: #FFFFFF;
+    --admin-surface-hover: #F0F0FF;
+    --admin-text-primary: #121212;
+    --admin-text-secondary: #4A4A4A;
+    --admin-text-tertiary: #666666;
+    --admin-accent: #6C5DD3;
+    /* Blurple */
+    --admin-accent-light: rgba(108, 93, 211, 0.15);
+
+    --admin-green: #00E676;
+    /* Neon Green */
+    --admin-green-light: rgba(0, 230, 118, 0.15);
+    --admin-orange: #FF9100;
+    --admin-orange-light: rgba(255, 145, 0, 0.15);
+    --admin-red: #FF1744;
+    --admin-red-light: rgba(255, 23, 68, 0.15);
+    --admin-purple: #D500F9;
+    --admin-purple-light: rgba(213, 0, 249, 0.15);
+    --admin-indigo: #651FFF;
+    --admin-pink: #F50057;
+
+    --admin-border: rgba(108, 93, 211, 0.2);
+    --admin-shadow-sm: 4px 4px 0px rgba(108, 93, 211, 0.1);
+    --admin-shadow-md: 6px 6px 0px rgba(108, 93, 211, 0.15);
+    --admin-shadow-lg: 10px 10px 0px rgba(108, 93, 211, 0.2);
+    --admin-shadow-xl: 12px 12px 0px rgba(108, 93, 211, 0.25);
+
+    --admin-font-display: 'Russo One', var(--admin-font);
+}
+
+[data-theme="glitch"] .admin-header {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid rgba(108, 93, 211, 0.3);
+}
+
+[data-theme="glitch"] .admin-bottom-nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-top: 2px solid rgba(108, 93, 211, 0.3);
+}
+
+[data-theme="glitch"] .admin-booking-card,
+[data-theme="glitch"] .admin-stat-card {
+    border: 2px solid rgba(108, 93, 211, 0.2);
+    box-shadow: 6px 6px 0px rgba(108, 93, 211, 0.15);
+}
+
+[data-theme="glitch"] .admin-status-badge {
+    border-width: 2px;
+}
+
 /* --- Base Reset --- */
 .admin-app {
     font-family: var(--admin-font);
