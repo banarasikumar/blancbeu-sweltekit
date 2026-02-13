@@ -227,9 +227,8 @@ export async function checkMagicLink(): Promise<boolean> {
 
         return true;
     } catch (error: any) {
-        console.error('Magic link login error:', error?.code, error?.message, error);
-        const errorDetail = error?.code || error?.message || 'Unknown error';
-        showToast(`Login failed: ${errorDetail}`, 'error');
+        console.error('Magic link login error:', error);
+        showToast('Login failed. The link may have expired.', 'error');
         return false;
     }
 }
