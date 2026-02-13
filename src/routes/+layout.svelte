@@ -10,7 +10,7 @@
 	import { page } from '$app/state';
 	import { restoreScrollPosition, saveScrollPosition, scrollPositions } from '$lib/stores/scroll';
 
-	import { theme } from '$lib/stores/theme';
+	import { theme, THEME_COLORS } from '$lib/stores/theme';
 
 	// Dynamic Import for Simulator
 	let { children } = $props();
@@ -21,12 +21,9 @@
 	let isHomePage = $derived(page.url.pathname === '/');
 	let isAdminRoute = $derived(page.url.pathname.startsWith('/admin'));
 
-	// Derived theme color for Android address bar
-	let metaThemeColor = $derived.by(() => {
-		if ($theme === 'clean') return '#F9F9F9';
-		if ($theme === 'glitch') return '#E6E6FA';
-		return '#000000'; // Gold / Default
-	});
+	// Derived theme color for address bar (Android Chrome, Safari, Edge, etc.)
+	let metaThemeColor = $derived(THEME_COLORS[$theme]);
+	let appleStatusBarStyle = $derived($theme === 'gold' ? 'black-translucent' : 'default');
 
 	onMount(async () => {
 		initAuth();
@@ -111,7 +108,13 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<!-- Mobile browser address bar & status bar color -->
 	<meta name="theme-color" content={metaThemeColor} />
+	<!-- iOS Safari status bar -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content={appleStatusBarStyle} />
+	<!-- Microsoft Edge / Windows Phone -->
+	<meta name="msapplication-navbutton-color" content={metaThemeColor} />
 </svelte:head>
 
 {#if isAdminRoute}

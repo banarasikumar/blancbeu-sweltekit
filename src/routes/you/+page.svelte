@@ -5,7 +5,7 @@
 
 	import { auth, db } from '$lib/firebase';
 	import { collection, query, where, getDocs } from 'firebase/firestore';
-	import { onAuthStateChanged } from 'firebase/auth';
+	import { onAuthStateChanged, signOut } from 'firebase/auth';
 	import type { User } from 'firebase/auth';
 	import { LogOut, Camera, Calendar, Clock, ChevronRight } from 'lucide-svelte';
 
@@ -98,6 +98,10 @@
 	onDestroy(() => {
 		if (unsubscribe) unsubscribe();
 	});
+
+	const editProfile = () => {
+		goto('/complete-profile');
+	};
 
 	const handleLogout = async () => {
 		if (confirm('Are you sure you want to sign out?')) {

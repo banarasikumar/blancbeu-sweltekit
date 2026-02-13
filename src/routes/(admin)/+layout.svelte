@@ -14,7 +14,7 @@
 	import AdminHeader from '$lib/components/admin/AdminHeader.svelte';
 	import AdminToast from '$lib/components/admin/AdminToast.svelte';
 
-	import { theme } from '$lib/stores/theme';
+	import { theme, ADMIN_THEME_COLORS } from '$lib/stores/theme';
 
 	let { children } = $props();
 
@@ -30,12 +30,9 @@
 
 	let isLoginPage = $derived(page.url.pathname.includes('/admin/login'));
 
-	// Derived theme color for Android address bar (Admin)
-	let metaThemeColor = $derived.by(() => {
-		if ($theme === 'clean') return '#FFFFFF'; // or #F5F5F7
-		if ($theme === 'glitch') return '#E6E6FA';
-		return '#1C1C1E'; // Admin Surface Color (Gold Theme Header) or #000000
-	});
+	// Derived theme color for address bar (Android Chrome, Safari, Edge, etc.)
+	let metaThemeColor = $derived(ADMIN_THEME_COLORS[$theme]);
+	let appleStatusBarStyle = $derived($theme === 'gold' ? 'black-translucent' : 'default');
 
 	onMount(() => {
 		initAdminAuth();
@@ -71,7 +68,13 @@
 <svelte:head>
 	<title>Blancbeu Admin{pageTitle ? ` — ${pageTitle}` : ''}</title>
 	<meta name="description" content="Blancbeu Administration Panel" />
+	<!-- Mobile browser address bar & status bar color -->
 	<meta name="theme-color" content={metaThemeColor} />
+	<!-- iOS Safari status bar -->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content={appleStatusBarStyle} />
+	<!-- Microsoft Edge / Windows Phone -->
+	<meta name="msapplication-navbutton-color" content={metaThemeColor} />
 	<link rel="manifest" href="/admin/manifest.json" />
 	<link
 		rel="stylesheet"
