@@ -1,13 +1,13 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getAdminAuth, getAdminDb, Timestamp } from '$lib/server/firebaseAdmin';
-import crypto from 'crypto';
+import { randomBytes } from 'crypto';
 
 export const POST: RequestHandler = async ({ request, url }) => {
-    const adminAuth = getAdminAuth();
-    const adminDb = getAdminDb();
-
     try {
+        const adminAuth = getAdminAuth();
+        const adminDb = getAdminDb();
+
         const body = await request.json();
         const { whatsapp_number } = body;
 
@@ -34,7 +34,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
         }
 
         // Generate secure magic token
-        const token = crypto.randomBytes(32).toString('hex');
+        const token = randomBytes(32).toString('hex');
         const expiresAt = Timestamp.fromMillis(Date.now() + 10 * 60 * 1000); // 10 mins
 
         // Store token in Firestore
@@ -49,8 +49,8 @@ export const POST: RequestHandler = async ({ request, url }) => {
         const magicLink = `${url.origin}/api/consume?token=${token}`;
 
         return json({ link: magicLink });
-    } catch (error) {
-        console.error('Verify Error:', error);
-        return json({ error: 'Internal Server Error' }, { status: 500 });
+    } catch (error: any) {
+        console.error('Verify Error:', error?.message || error);
+        return json({ error: 'Internal Server Error', detail: error?.message || 'Unknown' }, { status: 500 });
     }
 };

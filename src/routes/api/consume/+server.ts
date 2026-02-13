@@ -3,15 +3,15 @@ import type { RequestHandler } from './$types';
 import { getAdminAuth, getAdminDb, Timestamp } from '$lib/server/firebaseAdmin';
 
 export const GET: RequestHandler = async ({ url }) => {
-    const adminAuth = getAdminAuth();
-    const adminDb = getAdminDb();
-    const token = url.searchParams.get('token');
-
-    if (!token) {
-        return new Response('Missing token', { status: 400 });
-    }
-
     try {
+        const adminAuth = getAdminAuth();
+        const adminDb = getAdminDb();
+        const token = url.searchParams.get('token');
+
+        if (!token) {
+            return new Response('Missing token', { status: 400 });
+        }
+
         // 1. Find token in Firestore
         const snapshot = await adminDb
             .collection('magic_links')
@@ -59,12 +59,12 @@ export const GET: RequestHandler = async ({ url }) => {
         const redirectUrl = `/?token=${customToken}${isNewUser ? '&isNewUser=true' : ''}`;
         throw redirect(302, redirectUrl);
     } catch (error: any) {
-        // Re-throw redirects (SvelteKit uses thrown redirects)
+        // Re-throw SvelteKit redirects
         if (error?.status === 302) {
             throw error;
         }
 
-        console.error('Consume Error:', error);
-        return new Response('Internal Server Error', { status: 500 });
+        console.error('Consume Error:', error?.message || error);
+        return new Response(`Internal Server Error: ${error?.message || 'Unknown'}`, { status: 500 });
     }
 };
